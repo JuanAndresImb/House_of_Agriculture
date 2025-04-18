@@ -2,43 +2,60 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\BookStack\PageService;
 use Illuminate\Http\Request;
+use App\Services\BookStack\BookStackService;
 
 class BookStackController extends Controller
 {
-    protected PageService $pageService;
-
-    public function __construct(PageService $pageService)
+    /**
+     * Liste les livres disponibles dans BookStack
+     */
+    public function index(BookStackService $bookStack)
     {
-        $this->pageService = $pageService;
+        $books = $bookStack->getBooks()['data'] ?? [];
+        $headerTitle = 'Livres Bookstack';
+        return view('bookstack.books', compact('books', 'headerTitle'));
     }
 
-    // Affiche toutes les pages BookStack
-    public function index()
+    /**
+     * Affiche le formulaire pour créer une page
+     */
+    public function showCreateForm(BookStackService $bookStack)
     {
-        $pages = $this->pageService->getAllPages();
-        return view('bookstack.pages.index', compact('pages'));
+        $books = $bookStack->getBooks()['data'] ?? [];
+        $headerTitle = 'Créer une page Bookstack';
+        return view('bookstack.create', compact('books', 'headerTitle'));
     }
 
-    // Affiche le formulaire pour créer une page BookStack
-    public function create()
-    {
-        return view('bookstack.pages.create');
-    }
-
-    // Enregistre une nouvelle page dans BookStack
-    public function store(Request $request)
+    /**
+     * Envoie la nouvelle page à l'API BookStack
+     */
+    public function storePage(Request $request, BookStackService $bookStack)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'html' => 'required|string',  // contenu HTML ou markdown
             'book_id' => 'required|integer',
+            'title' => 'required|string|max:255',
+            'html' => 'required|string',
         ]);
 
-        $this->pageService->createPage($validated);
+        $page = $bookStack->createPage(
+            $validated['book_id'],
+            $validated['title'],
+            $validated['html']
+        );
 
-        return redirect()->route('bookstack.pages.index')
-                         ->with('success', 'Page créée dans BookStack !');
+        return redirect()->route('bookstack.createPage')
+            ->with('success', 'Page créée avec succès dans BookStack !');
     }
+    public function showPage(int $id, BookStackService $bookStack)
+    {
+        $page = $bookStack->getPage($id)['data'] ?? null;
+        abort_if(!$page, 404);
+        return view('bookstack.show', [
+            'page' => $page,
+            'headerTitle' => 'Afficher la page : ' . $page['name']
+        ]);
+    }
+
+
 }
