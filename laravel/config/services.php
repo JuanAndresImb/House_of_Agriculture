@@ -34,5 +34,10 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'bookstack' => [
+    'url' => env('BOOKSTACK_API_URL'),
+    'token' => env('BOOKSTACK_API_TOKEN'),
+],
+
 
 ];
