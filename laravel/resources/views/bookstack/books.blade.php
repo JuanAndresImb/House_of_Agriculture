@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-hoa-layout>
     <x-slot name="header">
         <h2 class="text-xl font-semibold leading-tight text-gray-800">
             {{ $headerTitle ?? 'Livres BookStack' }}
@@ -16,4 +16,5 @@
             </div>
         @endforeach
     </div>
-</x-app-layout>
+</x-hoa-layout>
+{{-- resources/views/home.blade.php --}}
