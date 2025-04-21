@@ -1,119 +1,121 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ config('app.name', 'House of Agroecology') }}</title>
-
-  <!-- Fonts & Styles -->
-  <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap" rel="stylesheet">
+  ...
   @vite(['resources/css/app.css', 'resources/js/app.js'])
++ <!-- Définition de nos utilitaires via Tailwind config ou inline pour l’exemple -->
++ <style>
++   .text-hoa-green   { color: #5dad56; }
++   .bg-hoa-yellow    { background-color: #eebf34; }
++   .hover\:text-hoa-brown:hover { color: #a0601a; }
++ </style>
   @livewireStyles
   @stack('styles')
 </head>
 
-<body class="font-raleway text-gray-800 bg-gray-50 flex flex-col min-h-screen">
+<body class="font-sofiapro text-gray-900 bg-gray-50 min-h-screen flex flex-col">
 
   <!-- HEADER -->
-  <header class="bg-white border-b shadow-sm">
+  <header class="bg-white border-b border-yellow-300">
     <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-      <!-- Logo + titre -->
+      <!-- Logo + Titre -->
       <div class="flex items-center space-x-3">
-        <img src="{{ asset('images/LOGO-HOA-VERTICAL-RVB.png') }}" alt="Logo HOA" class="h-48 w-55">
-        <span class="text-xl font-bold text-green-800">{{ config('app.name') }}</span>
+        <a href="{{ route('home') }}" class="flex items-center">
+          <img src="{{ asset('images/LOGO-HOA-HORIZONTAL-RVB.jpg') }}" alt="Logo HOA" class="h-12">
+          <span class="text-2xl font-bold text-hoa-green" style="font-family:'Diazo MVB Condensed';">
+            {{ config('app.name', 'House of Agroecology') }}
+          </span>
+        </a>
       </div>
 
-      <!-- Menu principal -->
-      <nav class="hidden md:flex space-x-6 text-sm font-semibold text-gray-700">
+      <!-- Mega‑menu principal (desktop) -->
+      <nav class="hidden lg:flex space-x-8 text-base font-semibold">
++       {{-- Ex. : Les items de nav peuvent venir d’un partial ou config --}}
         @include('partials._main-nav')
       </nav>
 
-      <!-- Profil + burger mobile -->
+      <!-- Actions utilisateur & bouton CTA -->
       <div class="flex items-center space-x-4">
-        <a href="{{ route('profile.show') }}" title="Mon compte" class="text-gray-600 hover:text-green-700">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none"
-               viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M5.121 17.804A9 9 0 1118.88 6.197 9 9 0 015.121 17.804z"/>
-          </svg>
+        <a href="{{ route('profile.show') }}" title="Mon compte" class="text-gray-600 hover:text-green-600">
+          <x-heroicon-o-user class="w-6 h-6"/>
         </a>
-        <button class="md:hidden text-gray-600 hover:text-green-700">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none"
-               viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M4 6h16M4 12h16M4 18h16"/>
-          </svg>
++       <a href="{{ route('donate') }}"
++          class="hidden md:inline-block bg-hoa-yellow text-white px-4 py-2 rounded hover:bg-yellow-500 font-semibold">
++         Nous soutenir
++       </a>
+        <button class="lg:hidden text-gray-600 hover:text-green-600">
+          <x-heroicon-o-bars-3 class="w-6 h-6"/>
         </button>
       </div>
     </div>
+
+    {{-- MEGA-MENU mobile / desktop (placeholder) --}}
++   <div class="lg:hidden bg-white border-t">
++     @include('partials._mobile-nav')
++   </div>
   </header>
 
-  <!-- CONTENU -->
+  <!-- OPTIONAL PAGE HEADER -->
+  @if (isset($header))
+    ...
+  @endif
+
+  <!-- MAIN CONTENT -->
   <main class="flex-grow py-8">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       {{ $slot }}
     </div>
   </main>
 
-  <!-- NAVIGATION PRÉCÉDENT / SUIVANT -->
-  <div class="border-t bg-gray-50">
+  <!-- PAGE NAVIGATION ARROWS (au-dessus du footer) -->
+ <!-- <div class="border-t bg-gray-50">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex justify-between">
-      <a href="{{ url()->previous() }}" class="text-yellow-500 font-semibold hover:underline">
+      <a href="{{ url()->previous() }}"
+         class="text-hoa-yellow text-lg font-semibold hover:underline">
         &larr; Précédent
       </a>
-      <a href="{{ route('home') }}" class="text-yellow-500 font-semibold hover:underline">
+      <a href="{{ route('home') }}"
+         class="text-hoa-yellow text-lg font-semibold hover:underline">
         Suivant &rarr;
       </a>
     </div>
   </div>
-
+-->
   <!-- FOOTER -->
-  <footer class="bg-white border-t text-sm text-gray-600">
+  <footer class="bg-white border-t border-gray-200 text-sm text-gray-600">
     <div class="max-w-7xl mx-auto py-10 px-6 grid md:grid-cols-4 gap-6">
-      <!-- Quod Enchiridion -->
-      <div>
-        <h4 class="font-bold mb-2">Quod Enchiridion</h4>
-        <ul class="space-y-1">
-          <li><a href="#" class="hover:underline">Quod Enchiridion</a></li>
-          <li><a href="#" class="hover:underline">Quod Enchiridion</a></li>
-        </ul>
-      </div>
-      <!-- À propos -->
-      <div>
-        <h4 class="font-bold mb-2">À propos</h4>
-        <ul class="space-y-1">
-          <li><a href="{{ route('mission') }}" class="hover:underline">Notre mission</a></li>
-          <li><a href="#" class="hover:underline">L’équipe</a></li>
-        </ul>
-      </div>
-      <!-- Newsletter -->
-      <div>
-        <h4 class="font-bold mb-2">Newsletter</h4>
-        <form class="space-y-2">
-          <input type="email" name="email" placeholder="Votre e-mail" class="w-full border px-3 py-2 rounded" required>
-          <input type="text" name="name" placeholder="Votre nom" class="w-full border px-3 py-2 rounded" required>
-          <button type="submit" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">
-            S’inscrire
-          </button>
-        </form>
-      </div>
-      <!-- Réseaux sociaux -->
-      <div class="flex items-end space-x-3">
-        <a href="https://linkedin.com/" target="_blank">
-          <img src="{{ asset('icons/linkedin.svg') }}" class="h-6 w-6" alt="LinkedIn">
-        </a>
-        <a href="https://instagram.com/" target="_blank">
-          <img src="{{ asset('icons/instagram.svg') }}" class="h-6 w-6" alt="Instagram">
-        </a>
-        <a href="https://facebook.com/" target="_blank">
-          <img src="{{ asset('icons/facebook.svg') }}" class="h-6 w-6" alt="Facebook">
-        </a>
-      </div>
-    </div>
-    <div class="text-center text-xs text-gray-400 pb-4">
-      © {{ date('Y') }} {{ config('app.name') }} — Tous droits réservés
-    </div>
+            <div>
+                <h4 class="font-bold mb-2">Quod Enchiridion</h4>
+                <ul class="space-y-1">
+                    <li><a href="#" class="hover:underline">Quod Enchiridion</a></li>
+                    <li><a href="#" class="hover:underline">Quod Enchiridion</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold mb-2">À propos</h4>
+                <ul class="space-y-1">
+                    <li><a href="#" class="hover:underline">Notre mission</a></li>
+                    <li><a href="#" class="hover:underline">L’équipe</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold mb-2">Newsletter</h4>
+                <form class="space-y-2">
+                    <input type="email" placeholder="Votre adresse e-mail" class="w-full border px-3 py-2 rounded">
+                    <input type="text" placeholder="Nom" class="w-full border px-3 py-2 rounded">
+                    <button class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">S’inscrire</button>
+                </form>
+            </div>
+            <div class="flex items-end space-x-3">
+                <a href="#"><img src="/icons/linkedin.svg" class="h-6" alt="LinkedIn"></a>
+                <a href="#"><img src="/icons/instagram.svg" class="h-6" alt="Instagram"></a>
+                <a href="#"><img src="/icons/facebook.svg" class="h-6" alt="Facebook"></a>
+            </div>
+        </div>
+        <div class="text-center text-xs text-gray-400 pb-4">
+            © {{ date('Y') }} House of Agroecology — Tous droits réservés
+        </div>
+    
   </footer>
 
   @stack('modals')
