@@ -53,3 +53,10 @@ Homestead.json
 # -------------------------------------
 docker/mariadb/*
 !docker/m
+
+
+
+# AVDW 23/04/25
+# fichiers temporaires de cache, sessions, vues compilées, etc. 
+docker/bookstack/www/framework/*
+!docker/bookstack/www/framework/.gitignore
