@@ -94,8 +94,8 @@
     <div class="relative">
       <div class="flex overflow-x-auto space-x-4 px-2">
         @foreach([
-          ['title'=>'Nos différents projets',   'img'=>'projets.png',  'link'=>route('projects')],
-          ['title'=>'Portraits des fermes',      'img'=>'fermes.png',   'link'=>route('farms')],
+          ['title'=>'Nos différents projets',   'img'=>'projets.png',  'link'=>route('partager.projets')],
+          ['title'=>'Portraits des fermes',      'img'=>'fermes.png',   'link'=>route('partager.portraits')],
         ] as $card)
           <a href="{{ $card['link'] }}"
              class="min-w-[300px] bg-gray-200 rounded-lg p-6 flex-shrink-0 hover:shadow-md">

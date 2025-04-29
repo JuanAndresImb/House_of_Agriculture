@@ -2,22 +2,31 @@
 
 namespace Database\Seeders;
 
+use App\Models\Actualite;
+use App\Models\Document;
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
     /**
-     * Seed the application's database.
+     * Remplit la base avec des données fictives pour le développement et les tests.
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
+        // 1. Crée quelques utilisateurs de test (membres et admin)
+        User::factory(5)->create(); // membres aléatoires
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name'  => 'Admin HoA',
+            'email' => 'admin@hoa.local',
+            'role'  => 'admin',        // si tu as un champ role
+            'password' => bcrypt('secret123'),
         ]);
+
+        // 2. Actualités
+        Actualite::factory(10)->create();
+
+        // 3. Documents internes
+        Document::factory(20)->create();
     }
 }
