@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\BookStack\BookService;
 use Illuminate\Http\Request;
 use App\Services\BookStack\BookStackService;
+
 
 class BookStackController extends Controller
 {
@@ -47,6 +49,7 @@ class BookStackController extends Controller
         return redirect()->route('bookstack.createPage')
             ->with('success', 'Page créée avec succès dans BookStack !');
     }
+    //Montre une page specifique
     public function showPage(int $id, BookStackService $bookStack)
     {
         $page = $bookStack->getPage($id)['data'] ?? null;
@@ -57,5 +60,13 @@ class BookStackController extends Controller
         ]);
     }
 
+    //Afficher les pages d'un book dans Booksctack
+
+    public function showBookPages(int $bookidn, BookService $bookStack)
+    {
+        $book = $bookStack->getBookPages($bookId);
+        $pages = $bookStack->getBookPages($bookId);
+        return view('bookstack.book-pages', compact('book', 'pages'));
+    }
 
 }

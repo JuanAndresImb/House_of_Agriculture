@@ -5,6 +5,7 @@ namespace App\Services\BookStack;
 class BookStackService
 {
     protected BookStackClient $client;
+    
 
     public function __construct(BookStackClient $client)
     {
@@ -31,6 +32,12 @@ class BookStackService
     public function getPage(int $pageId)
     {
         return $this->client->get("/pages/{$pageId}");
+    }
+
+    // 📜 Afficher les pages d'un livre Bookstack 
+    public function getBookPages(int $bookId)
+    {
+        return $this->client->get("/api/books/{$bookId}/pages")['data'] ?? [];
     }
 
     // 🔁 Modifier une page existante

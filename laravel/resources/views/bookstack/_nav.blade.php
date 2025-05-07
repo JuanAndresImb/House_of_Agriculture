@@ -1,4 +1,3 @@
-<!-- resources/views/bookstack/_nav.blade.php -->
 <nav class="bg-gray-100 p-4 mb-6 rounded">
   <ul class="flex space-x-4">
     <li><a href="{{ route('bookstack.books') }}" class="text-blue-600 hover:underline">Livres</a></li>

@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Actualite;
+use App\Models\Book;
 use App\Models\Document;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -28,5 +29,8 @@ class DatabaseSeeder extends Seeder
 
         // 3. Documents internes
         Document::factory(20)->create();
+
+        // Ajoute d'autres factories ici si nécessaire
+        Book::factory(10)->create();
     }
 }

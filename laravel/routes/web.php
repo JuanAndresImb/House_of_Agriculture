@@ -18,8 +18,10 @@ Route::middleware(['auth'])->group(function () {
     // BookStack
     Route::get('/bookstack/books',   [BookStackController::class, 'index'])->name('bookstack.books');
     Route::get('/bookstack/create',  [BookStackController::class, 'showCreateForm'])->name('bookstack.createPage');
+    Route::get('/bookstack/book/{bookId}/pages', [BookStackController::class, 'showBookPages'])->name('bookstack.bookPages');
     Route::post('/bookstack/create', [BookStackController::class, 'storePage'])->name('bookstack.storePage');
     Route::post('/bookstack/page/{id}', [BookStackController::class, 'showPage'])->name('bookstack.showPage');
+    
 
     // Dashboard (exemple)
     Route::view('/dashboard', 'dashboard')->name('dashboard');
@@ -51,6 +53,7 @@ Route::middleware(['auth'])->group(function () {
     // ----------------------------
     // Landing “Partager” → RETEX par défaut
     Route::get('/partager',            [RetexController::class, 'index'])->name('partager');
+
     // RETEX
     Route::get('/partager/retex',      [RetexController::class, 'index'])->name('partager.retex');
     Route::get('/retex/{retex}',       [RetexController::class, 'show'])->name('retex.show');

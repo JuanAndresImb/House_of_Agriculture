@@ -2,6 +2,9 @@
 
 namespace App\Services\BookStack;
 
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
+
 class UserService
 {
     protected BookStackClient $client;
@@ -11,9 +14,27 @@ class UserService
         $this->client = $client;
     }
 
-    // Verifica que tienes exactamente esta función
+
+   
     public function createUser(array $userData)
     {
-        return $this->client->post('users', $userData);
+        $url = '/users';
+    
+        Log::info('BookStack → création utilisateur : données envoyées', $userData);
+    
+        $response = Http::withHeaders([
+            'Authorization' => 'Token ' . config('services.bookstack.token'),
+            'Accept' => 'application/json',
+        ])->post(config('services.bookstack.url') . $url, $userData);
+    
+        // Log status + body
+        Log::info('Réponse BookStack API', [
+            'status' => $response->status(),
+            'body'   => $response->json(), // ou ->body() si tu veux brut
+        ]);
+    
+        return $response->json();
     }
+    
+    
 }

@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-hoa-layout>
 
 <div class="max-w-3xl mx-auto mt-10 bg-white p-6 rounded shadow">
     <h2 class="text-2xl font-bold mb-6">Créer une page BookStack</h2>
@@ -8,7 +8,7 @@
 
         <!-- Sélecteur de livre -->
         <div class="mb-4">
-            <label class="block text-sm font-medium text-gray-700 mb-1">Livre</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Livres</label>
             <select name="book_id" class="w-full border border-gray-300 rounded px-3 py-2">   
             @foreach ($books as $book)
                     <option value="{{ $book['id'] }}">{{ $book['name'] }}</option>
@@ -34,4 +34,4 @@
     </form>
 </div>
 
-</x-app-layout>
+</x-hoa-layout>

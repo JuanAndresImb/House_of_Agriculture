@@ -51,7 +51,7 @@ class CreateNewUser implements CreatesNewUsers
                 'name' => $input['name'],
                 'email' => $input['email'],
                 'password' => $input['password'],
-                'roles' => [3], // rôle Viewer par défaut
+                'role_id' => [2], // rôle Viewer par défaut
                 'send_invite' => false,
             ]);
         } catch (\Exception $e) {

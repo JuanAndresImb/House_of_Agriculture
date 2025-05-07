@@ -11,7 +11,6 @@ class UserService
         $this->client = $client;
     }
 
-    // Verifica que tienes exactamente esta función
     public function createUser(array $userData)
     {
         return $this->client->post('users', $userData);
