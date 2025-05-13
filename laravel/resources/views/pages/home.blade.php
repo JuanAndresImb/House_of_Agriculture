@@ -1,133 +1,177 @@
-{{-- resources/views/home.blade.php --}}
-<x-hoa-layout>
-  {{-- 1. HERO --}}
-  <section class="bg-gray-200 rounded-lg overflow-hidden mb-12">
-    <div class="md:flex">
-      <div class="md:w-1/2 p-8">
-        <h1 class="font-diazo text-4xl text-hoa-green mb-4">
-          Engager tous les acteurs vers la transition agroécologique
-        </h1>
-        <p class="mb-6">
-          <strong>The House of Agroecology</strong> est un mouvement collectif, inclusif...
+@php
+  $imgs = [
+    'images/leader/1.jpg','images/leader/2.jpg','images/leader/3.jpg',
+    'images/leader/4.jpg','images/leader/5.jpg','images/leader/6.jpg',
+    'images/leader/7.jpg','images/leader/8.jpg','images/leader/9.jpg',
+    'images/leader/10.jpg','images/leader/11.jpg','images/leader/12.jpg',
+  ];
+  $chunks = array_chunk($imgs, 6);
+  $slidesJson = json_encode($chunks);
+@endphp
+
+<x-hoa-layout :wide="true">
+
+  {{-- Hero plein écran --}}
+  <x-slot name="hero">
+    <x-hoa-hero image-url="{{ asset('images/home/hero-home.png') }}">
+      <h1 class="font-diazo text-6xl lg:text-7xl text-white drop-shadow-lg mb-4">
+        Construisons ensemble l'agriculture de demain
+      </h1>
+      <p class="text-2xl lg:text-3xl text-white max-w-2xl mx-auto mb-6 drop-shadow">
+        Découvrez comment nos membres font émerger l’agroécologie, une histoire à la fois.
+      </p>
+      <x-hoa-button url="{{ route('about') }}">Découvrir HoA</x-hoa-button>
+    </x-hoa-hero>
+  </x-slot>
+
+  {{-- Introduction / Accueil --}}
+  <section class="bg-gray-50 py-16">
+    <div class="max-w-7xl mx-auto px-4 text-center space-y-6">
+      <p class="text-gray-700 leading-relaxed">
+        <em>Engager tous les acteurs vers la transition agroécologique</em> – <strong>The House of Agroecology</strong> est
+        un mouvement collectif, inclusif et neutre qui agit comme un guichet central pour accélérer la transition
+        agricole et alimentaire en Belgique. Nous rassemblons agriculteurs, techniciens, entreprises agroalimentaires,
+        experts et citoyens… <strong>de la fourche à la fourchette</strong>, pour innover et réussir la transition
+        vers des systèmes durables et résilients.
+      </p>
+      <p class="text-gray-700 leading-relaxed">
+        Chaque acteur a un rôle à jouer. En réunissant tous les maillons – du champ à l’assiette – nous formons une
+        famille agroécologique où <strong>l’union fait la vie</strong>. HoA se positionne en tiers de confiance pour
+        partager savoirs et outils.
+      </p>
+      <p class="text-gray-700 leading-relaxed">
+        <strong>Rejoignez le mouvement !</strong> Agriculteur, entrepreneur ou citoyen, découvrez nos services et
+        adhérez pour faire de l’agroécologie la norme de demain.
+      </p>
+      <div class="flex justify-center space-x-4 pt-4">
+        <x-hoa-button url="{{ route('register') }}">Adhérer dès maintenant</x-hoa-button>
+        <x-hoa-button url="{{ route('about') }}" variant="outline">En savoir plus</x-hoa-button>
+      </div>
+    </div>
+  </section>
+
+  {{-- Espaces clés --}}
+  <section class="py-20">
+    <div class="max-w-4xl mx-auto text-center mb-12 px-4">
+      <h2 class="font-sourcecode text-3xl text-hoa-green mb-4">Nos espaces clés</h2>
+      <p class="text-gray-700">Apprendre – S’informer – Partager pour progresser ensemble</p>
+    </div>
+    <div class="max-w-5xl mx-auto grid sm:grid-cols-3 gap-8 px-4">
+      <x-hoa-card title="Apprendre"
+                  icon="{{ asset('images/home/home-icons/apprendre.png') }}"
+                  url="{{ route('apprendre') }}">
+        Formations en ligne et sur le terrain.
+      </x-hoa-card>
+      <x-hoa-card title="S’informer"
+                  icon="{{ asset('images/home/home-icons/informer.png') }}"
+                  url="{{ route('s-informer') }}">
+        Actualités, ressources et documentation.
+      </x-hoa-card>
+      <x-hoa-card title="Partager"
+                  icon="{{ asset('images/home/home-icons/partager.png') }}"
+                  url="{{ route('partager') }}">
+        Retours d’expérience et portraits de fermes.
+      </x-hoa-card>
+    </div>
+  </section>
+
+  <section class="bg-white">
+    <div class="max-w-7xl mx-auto">
+      <div
+        x-data="{
+          slides: {!! $slidesJson !!},
+          current: 0,
+          timer: null,
+          init() {
+            this.timer = setInterval(() => this.current = (this.current + 1) % this.slides.length, 5000)
+          },
+          prev() { clearInterval(this.timer); this.current = (this.current + this.slides.length - 1) % this.slides.length; this.init() },
+          next() { clearInterval(this.timer); this.current = (this.current + 1) % this.slides.length; this.init() }
+        }"
+        x-init="init()"
+        class="relative overflow-hidden h-96"
+      >
+        <template x-for="(slide, i) in slides" :key="i">
+          <div
+            x-show="i===current"
+            class="absolute inset-0 grid grid-cols-3 grid-rows-2 gap-1 transition-opacity duration-700"
+            x-transition
+          >
+            <template x-for="img in slide" :key="img">
+              <img :src="`{{ asset('') }}${img}`" alt="" class="w-full h-full object-cover"/>
+            </template>
+          </div>
+        </template>
+        <button @click="prev()"
+                class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-hoa-yellow p-2 rounded-full shadow">
+          <x-heroicon-o-chevron-left class="w-5 h-5 text-white"/>
+        </button>
+        <button @click="next()"
+                class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-hoa-yellow p-2 rounded-full shadow">
+          <x-heroicon-o-chevron-right class="w-5 h-5 text-white"/>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  {{-- Événements --}}
+  <section class="bg-gray-50 py-20">
+    <div class="max-w-7xl mx-auto lg:grid lg:grid-cols-2 gap-8 px-4">
+      <div class="order-2 lg:order-1 flex flex-col justify-center">
+        <h2 class="font-diazo text-4xl text-gray-800 mb-4">Nos événements</h2>
+        <p class="text-gray-700 mb-6 leading-relaxed">
+          HoA organise des ateliers, webinaires et rencontres pour inspirer, former et connecter les acteurs
+          agricoles autour de l’agroécologie, du champ à l’assiette.
         </p>
-        <a href="#espaces" class="inline-block bg-hoa-yellow text-white px-5 py-3 rounded font-semibold hover:bg-yellow-500">
-          Découvrir
-        </a>
+        <div class="flex space-x-4">
+          <x-hoa-button url="#" variant="outline">Voir le calendrier</x-hoa-button>
+          <x-hoa-button url="#" class="bg-gray-800 text-white hover:bg-gray-700">Contactez-nous</x-hoa-button>
+        </div>
       </div>
-      <div class="md:w-1/2 bg-gray-300 flex items-center justify-center">
-        <img src="{{ asset('images/hero-placeholder.png') }}" alt="Illustration transition" class="w-3/4">
+      <div class="order-1 lg:order-2 h-80 overflow-hidden rounded-lg shadow">
+        <img src="{{ asset('images/formation1.jpg') }}" alt="Événement HoA" class="w-full h-full object-cover"/>
       </div>
     </div>
   </section>
 
-  {{-- 2. SECTION HOA (diagramme + texte) --}}
-  <section class="mb-12 grid md:grid-cols-2 gap-8 items-center">
-    <div class="flex justify-center">
-      <img src="{{ asset('images/diagramme-hoa.png') }}" alt="Diagramme HoA" class="max-w-sm">
-    </div>
-    <div>
-      <h2 class="font-diazo text-3xl text-hoa-green mb-4">HoA</h2>
-      <p class="mb-4">Quea tibi placent quicunq prosunt... (ton texte sur HoA)</p>
-      <p>Chaque acteur a un rôle à jouer...</p>
+  {{-- Témoignage --}}
+  <section class="py-16">
+    <div class="max-w-3xl mx-auto px-4 text-center">
+      <blockquote class="italic text-2xl text-gray-700 mb-6">
+        « Grâce à HoA, j’ai pu rencontrer d’autres agriculteurs pionniers et innover en toute confiance. »
+      </blockquote>
+      <p class="font-sourcecode text-hoa-green">– Un membre HoA</p>
     </div>
   </section>
 
-  {{-- 3. NOS ESPACES CLÉS --}}
-  <section id="espaces" class="mb-12">
-    <h2 class="font-diazo text-3xl text-center text-hoa-green mb-8">Nos espaces clés</h2>
-    <div class="grid md:grid-cols-3 gap-6">
-  @foreach([
-    [
-      'title' => 'Apprendre',
-      'image' => 'images/espaces/apprendre.png',
-      'text'  => 'Un espace dédié à la formation et à l’éducation autour de l’agroécologie...',
-      'route' => 'apprendre'
-    ],
-    [
-      'title' => 'S’informer',
-      'image' => 'images/espaces/s-informer.png',
-      'text'  => 'Un espace pour suivre l’actualité et les évolutions du secteur agroécologique...',
-      'route' => 's-informer'
-    ],
-    [
-      'title' => 'Partager',
-      'image' => 'images/espaces/partager.png',
-      'text'  => 'Un espace pour échanger et valoriser les expériences...',
-      'route' => 'partager'
-    ],
-  ] as $space)
-    <div class="bg-white p-6 rounded-lg shadow-sm text-center">
-      <img src="{{ asset($space['image']) }}"
-           alt="{{ $space['title'] }}"
-           class="w-full h-13 object-cover rounded mb-4">
-      <h3 class="font-sourcecode text-xl mb-2">{{ $space['title'] }}</h3>
-      <p class="text-gray-700">{{ $space['text'] }}</p>
-      <a href="{{ route($space['route']) }}"
-         class="inline-block mt-4 text-hoa-green font-semibold hover:underline">
-        En savoir plus →
-      </a>
+  {{-- Logos partenaires --}}
+  <section class="bg-white py-16">
+    <div class="max-w-5xl mx-auto px-4 text-center mb-8">
+      <h3 class="font-diazo text-2xl text-gray-600">Avec le soutien de</h3>
     </div>
-  @endforeach
-</div>
-
-  </section>
-
-  {{-- 4. TÉMOIGNAGE --}}
-  <section class="mb-12 bg-white p-8 rounded-lg shadow-sm">
-    <blockquote class="italic text-gray-800">
-      “Grâce à House of Agroecology, j’ai pu rencontrer d’autres agriculteurs pionniers...”
-    </blockquote>
-    <p class="mt-4 text-right font-semibold">– Un membre de HoA</p>
-  </section>
-
-  {{-- 5. BLOC REJOINDRE --}}
-  <div class="text-center mb-12">
-    <a href="{{ route('register') }}"
-       class="bg-hoa-green text-white px-6 py-3 rounded font-semibold hover:bg-green-600">
-      Rejoignez le mouvement !
-    </a>
-  </div>
-
-  {{-- 6. SLIDER PROJETS / PORTRAITS --}}
-  <section class="mb-12">
-    <h2 class="font-diazo text-3xl text-center text-hoa-green mb-6">Nos initiatives</h2>
-    <div class="relative">
-      <div class="flex overflow-x-auto space-x-4 px-2">
-        @foreach([
-          ['title'=>'Nos différents projets',   'img'=>'projets.png',  'link'=>route('partager.projets')],
-          ['title'=>'Portraits des fermes',      'img'=>'fermes.png',   'link'=>route('partager.portraits')],
-        ] as $card)
-          <a href="{{ $card['link'] }}"
-             class="min-w-[300px] bg-gray-200 rounded-lg p-6 flex-shrink-0 hover:shadow-md">
-            <img src="{{ asset('images/'.$card['img']) }}" alt="" class="mb-4 rounded">
-            <h3 class="font-sourcecode text-xl text-center">{{ $card['title'] }}</h3>
-          </a>
-        @endforeach
-      </div>
-      {{-- Flèches --}}
-      <button class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow">
-        <x-heroicon-o-chevron-left class="w-5 h-5"/>
-      </button>
-      <button class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow">
-        <x-heroicon-o-chevron-right class="w-5 h-5"/>
-      </button>
-    </div>
-  </section>
-
-  {{-- 7. LOGOS PARTENAIRES --}}
-  <section class="mb-12">
-    <h2 class="font-diazo text-2xl text-center text-gray-600 mb-6">Avec le soutien de</h2>
-    <div class="flex items-center justify-center space-x-6">
-      @foreach(['logo1.png','logo2.png','logo3.png','logo4.png','logo5.png'] as $logo)
-        <img src="{{ asset('partners/'.$logo) }}" alt="Partenaire" class="h-12 opacity-80 hover:opacity-100">
+    <div class="max-w-6xl mx-auto flex flex-wrap justify-center gap-8 px-4">
+      @foreach(['logo1.png','logo2.png','logo3.png','logo4.png','logo5.png','logo6.png'] as $logo)
+        <img src="{{ asset('images/home/soutienLogo/'.$logo) }}"
+             alt="Partenaire" class="h-12 opacity-80 hover:opacity-100"/>
       @endforeach
     </div>
   </section>
 
-  {{-- 8. NAVIGATION BAS DE PAGE --}}
-  <div class="flex justify-between text-hoa-yellow text-lg font-semibold">
-    <a href="{{ route('contact') }}" class="hover:underline">&laquo; Aide / Contact</a>
-    <a href="{{ route('partager') }}" class="hover:underline">Partager &raquo;</a>
-  </div>
+  {{-- CTA final --}}
+  <section class="bg-hoa-yellow py-16 text-center text-white">
+    <h2 class="font-diazo text-3xl mb-4">Prêt à rejoindre notre famille agroécologique&nbsp;?</h2>
+    <p class="max-w-2xl mx-auto mb-6">
+      Devenez membre HoA et participez activement à la transition agroécologique.
+    </p>
+    <x-hoa-button url="{{ route('register') }}" variant="white">Je rejoins HoA →</x-hoa-button>
+  </section>
+
+  {{-- Navigation footer --}}
+  <section class="py-12">
+    <div class="max-w-4xl mx-auto flex justify-between text-hoa-green text-lg font-semibold px-4">
+      <a href="{{ route('contact') }}" class="hover:underline">&laquo; Aide & Contact</a>
+      <a href="{{ route('partager') }}" class="hover:underline">Partager &raquo;</a>
+    </div>
+  </section>
 
 </x-hoa-layout>

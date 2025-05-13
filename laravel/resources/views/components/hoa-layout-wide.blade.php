@@ -9,16 +9,13 @@
   </style>
   @livewireStyles
   @stack('styles')
-
 </head>
 
 <body class="font-sofiapro text-gray-900 bg-gray-50 min-h-screen flex flex-col">
 
-  <!-- HEADER -->
+  {{-- HEADER identique --}}
   <header class="bg-white border-b-2 border-yellow-300 shadow-sm z-50 sticky top-0">
     <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-
-      <!-- Logo + Titre -->
       <a href="{{ route('home') }}" class="flex items-center space-x-3">
         <img src="{{ asset('images/Logo-hoa-horizontal.jpg') }}"
              alt="Logo HOA" class="h-10 w-auto">
@@ -27,12 +24,10 @@
         </span>
       </a>
 
-      <!-- Navigation desktop -->
       <nav>
         @include('partials._main-nav')
       </nav>
 
-      <!-- Compte + burger -->
       <div class="flex items-center space-x-4">
         <a href="{{ route('profile.show') }}"
            class="hidden sm:inline-block text-gray-600 hover:text-hoa-green transition">
@@ -42,10 +37,8 @@
           <x-heroicon-o-bars-3 class="w-6 h-6" />
         </button>
       </div>
-
     </div>
 
-    <!-- Mobile nav -->
     <div id="mobile-nav" class="hidden lg:hidden bg-white border-t border-gray-200">
       <div class="flex flex-col space-y-4 px-6 py-6 text-base font-medium">
         <a href="{{ route('home') }}"       class="text-gray-600 hover:text-hoa-green">Accueil</a>
@@ -61,29 +54,21 @@
     </div>
   </header>
 
- @props(['wide' => false])
+  {{-- MAIN CONTENT (déverrouillé) --}}
+  <main class="flex-grow">
+    @isset($hero)
+      {{ $hero }}
+    @endisset
 
-<main class="flex-grow">
-  {{-- Hero full-width --}}
-  @isset($hero)
-    {{ $hero }}
-  @endisset
+    @isset($banner)
+      {{ $banner }}
+    @endisset
 
-  {{-- Banner full-width --}}
-  @isset($banner)
-    {{ $banner }}
-  @endisset
-
-  @if ($wide)
+    {{-- ICI pas de max-w-* ni de px-* imposé --}}
     {{ $slot }}
-  @else
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-      {{ $slot }}
-    </div>
-  @endif
-</main>
+  </main>
 
-  <!-- FOOTER -->
+  {{-- FOOTER identique --}}
   <footer class="bg-white border-t border-gray-200 text-sm text-gray-600">
     <div class="max-w-7xl mx-auto py-10 px-6 grid md:grid-cols-4 gap-6">
       <div>
@@ -124,7 +109,7 @@
 
   <script>
     document.getElementById('mobile-nav-toggle')?.addEventListener('click', function () {
-      document.getElementById('mobile-nav').classList.toggle('hidden');
+      document.getElementById('mobile-nav')?.classList.toggle('hidden');
     });
   </script>
 </body>

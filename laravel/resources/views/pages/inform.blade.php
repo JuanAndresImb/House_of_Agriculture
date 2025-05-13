@@ -19,6 +19,12 @@
       <h2 class="font-sourcecode text-xl text-hoa-green mb-2">Ressources membres</h2>
       <p class="text-gray-600">Accédez à la documentation interne et aux archives réservées aux membres de HoA.</p>
     </a>
+    <a href="{{ route('bookstack.books') }}"
+   class="bg-white border border-gray-200 rounded-lg p-6 shadow-sm hover:shadow-md transition">
+  <h2 class="font-sourcecode text-xl text-hoa-green mb-2">Wiki agroécologique</h2>
+  <p class="text-gray-600">Explorez les livres, chapitres et pages rédigées via BookStack. Une base de connaissances collaborative sur l’agroécologie.</p>
+</a>
+
   </section>
 
   {{-- Navigation bas de page --}}

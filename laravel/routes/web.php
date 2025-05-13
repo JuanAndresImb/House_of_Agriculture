@@ -21,7 +21,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/bookstack/book/{bookId}/pages', [BookStackController::class, 'showBookPages'])->name('bookstack.bookPages');
     Route::post('/bookstack/create', [BookStackController::class, 'storePage'])->name('bookstack.storePage');
     Route::post('/bookstack/page/{id}', [BookStackController::class, 'showPage'])->name('bookstack.showPage');
-    
 
     // Dashboard (exemple)
     Route::view('/dashboard', 'dashboard')->name('dashboard');
